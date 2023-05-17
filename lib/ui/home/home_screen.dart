@@ -40,6 +40,16 @@ class HomeScreen extends StatelessWidget {
                       ));
                 },
                 child: Text("Show Section")),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 10,
+              itemBuilder: (context, index) => Container(
+                  width: 100,
+                  height: 100,
+                  margin: EdgeInsets.all(10),
+                  color: Colors.red),
+            )
           ]),
         ),
       ),

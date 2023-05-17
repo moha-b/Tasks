@@ -20,12 +20,10 @@ class Sections extends StatelessWidget {
           child: BlocBuilder<CategoriesBloc, CategoriesState>(
             builder: (context, state) {
               if (state is CategoriesLoading) {
-                print(state.toString());
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else if (state is CategoriesLoaded) {
-                print(state.toString());
                 return buildCategories(
                     size: size, categories: state.categories);
               } else {
@@ -39,27 +37,32 @@ class Sections extends StatelessWidget {
     );
   }
 
-  GridView buildCategories(
-      {required Size size, required Categories categories}) {
-    return GridView.builder(
-        itemCount: categories.data.length,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            crossAxisCount: 4,
-            childAspectRatio: 1.3),
-        itemBuilder: (context, index) {
-          int reversedIndex = categories.data.length - 1 - index;
-          return buildCategoryCard(
-              size: size, categories: categories, index: reversedIndex);
-        });
+  Widget buildCategories({required Size size, required Categories categories}) {
+    categories.data.sort(
+      (a, b) => a.id.compareTo(b.id),
+    );
+
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: GridView.builder(
+          itemCount: categories.data.length,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              crossAxisCount: 4,
+              childAspectRatio: 1.3),
+          itemBuilder: (context, index) {
+            Data data = categories.data[index];
+            return buildCategoryCard(size: size, categories: data);
+          }),
+    );
   }
 
-  ClipRRect buildCategoryCard(
-      {required Size size,
-      required Categories categories,
-      required int index}) {
+  ClipRRect buildCategoryCard({
+    required Size size,
+    required Data categories,
+  }) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(size.width * 0.047),
       child: Container(
@@ -70,11 +73,11 @@ class Sections extends StatelessWidget {
             Expanded(
               flex: 2,
               child: CachedNetworkImage(
-                imageUrl: categories.data[index].avatar,
+                imageUrl: categories.avatar,
                 fit: BoxFit.cover,
               ),
             ),
-            Expanded(child: Text(categories.data[index].name)),
+            Expanded(child: Text(categories.name)),
           ],
         ),
       ),
