@@ -1,62 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tasks/ui/home/widgets/section_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasks/ui/home/bloc/categories_bloc.dart';
+import 'package:tasks/ui/home/widgets/categories_grid_view_widget.dart';
 import 'package:tasks/ui/home/widgets/tab_bar_widget.dart';
 import 'package:tasks/ui/home/widgets/welcome_widget.dart';
 
-import '../../core/resources/colors.dart';
-
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  int selectedTabIndex = 0;
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
+    return BlocProvider(
+      create: (context) => CategoriesBloc()..add(CategoriesEvent()),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
           child: Column(children: [
-            WelcomeSection(),
-            TabBarSection(),
+            const WelcomeSection(),
+            TabBarSection(
+              onItemSelected: (index) {},
+            ),
             Container(
-                margin: EdgeInsets.only(right: 16, top: 24),
+                margin: EdgeInsets.only(right: 16, top: 24, bottom: 10),
                 alignment: Alignment.centerRight,
                 child: Text(
                   "اكتشف جميع أقسامنا",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.copyWith(color: Colors.black),
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 )),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Sections(),
-                      ));
-                },
-                child: Text("Show Section")),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) => Container(
-                  width: 100,
-                  height: 100,
-                  margin: EdgeInsets.all(10),
-                  color: Colors.red),
-            )
+            CategoriesGridView(),
           ]),
         ),
       ),
     );
   }
 }
-
-/*
-*
-*/

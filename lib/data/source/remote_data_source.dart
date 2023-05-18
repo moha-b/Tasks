@@ -10,7 +10,6 @@ Future<Either<String, Categories>> getCategories() async {
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonMap = response.data;
       Categories categories = Categories.fromJson(jsonMap);
-      print(categories.data.map((e) => e.id));
       return Right(categories);
     } else {
       return Left('Status Error: ${response.statusCode}');
