@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/ui/aboutus/about_us_screen.dart';
+import 'package:tasks/ui/contactus/contact_us_screen.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: AboutUsScreen(),
+    home: ContactUsScreen(),
     debugShowCheckedModeBanner: false,
   ));
 }
