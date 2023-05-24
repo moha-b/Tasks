@@ -27,61 +27,41 @@ class ContactUsScreen extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Expanded(flex: 11, child: SizedBox.shrink()),
-                      Expanded(child: Text("التواصل")),
-                      Expanded(
-                        flex: 1,
-                        child: SvgPicture.asset("assets/back.svg"),
+                      const Expanded(
+                        child: Text(
+                          "التواصل",
+                          textDirection: TextDirection.rtl,
+                        ),
                       ),
+                      InkWell(
+                          onTap: () {},
+                          child: SvgPicture.asset("assets/back.svg")),
                     ],
                   ),
                 ),
                 Container(
-                  height: 160,
+                  height: 100,
                   width: MediaQuery.of(context).size.width / 2,
-                  margin: EdgeInsets.all(32),
-                  child: Row(
+                  margin: const EdgeInsets.all(32),
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("البريد الالكترونى"),
-                            Row(
-                              children: [
-                                Expanded(child: Text("info@mahara.com")),
-                                Expanded(
-                                    child: SvgPicture.asset("assets/file.svg")),
-                              ],
-                            ),
-                          ],
+                        child: ContactUsData(
+                          dataType: "البريد الالكترونى",
+                          data: "info@mahara.com",
+                          svgImagePath: "assets/file.svg",
                         ),
                       ),
-                      Expanded(
-                        child: VerticalDivider(
-                          color: Colors.grey,
-                          width: 5,
-                        ),
+                      VerticalDivider(
+                        color: Colors.grey,
+                        width: 5,
                       ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text("رقم الجوال"),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Expanded(child: Text("123456789")),
-                                Expanded(
-                                  child: SvgPicture.asset(
-                                    "assets/call.svg",
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      ContactUsData(
+                        dataType: "رقم الجوال",
+                        data: "123456789",
+                        svgImagePath: "assets/call.svg",
                       ),
                     ],
                   ),
@@ -96,20 +76,95 @@ class ContactUsScreen extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: 1,
-              left: 32,
-              child: SvgPicture.asset(
-                "assets/flower.svg",
-              ),
-            ),
-            Positioned(
               bottom: 32,
               right: 32,
-              child: SvgPicture.asset(
-                "assets/list-of-icons.svg",
-              ),
+              child: SocialMedialLinks(),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SocialMedialLinks extends StatelessWidget {
+  SocialMedialLinks({
+    super.key,
+  });
+
+  List social = [
+    "assets/facebook-f.svg",
+    "assets/instagram.svg",
+    "assets/whatsapp.svg",
+    "assets/twitter.svg",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 150,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: List.generate(
+          4,
+          (index) => InkWell(
+            onTap: () {
+              if (social[index].toString().contains("twitter")) {
+                print("Twitter");
+              } else if (social[index].toString().contains("whatsapp")) {
+                print("whatsapp");
+              } else if (social[index].toString().contains("instagram")) {
+                print("instagram");
+              } else {
+                print(social[index]);
+              }
+            },
+            child: SvgPicture.asset(
+              social[index],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ContactUsData extends StatelessWidget {
+  final String dataType;
+  final String data;
+  final String svgImagePath;
+  const ContactUsData(
+      {Key? key,
+      required this.dataType,
+      required this.data,
+      required this.svgImagePath})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(right: 0),
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: SizedBox(
+          height: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(dataType),
+                  Text(data),
+                ],
+              ),
+              SvgPicture.asset(
+                svgImagePath,
+              ),
+            ],
+          ),
         ),
       ),
     );

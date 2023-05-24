@@ -29,7 +29,18 @@ class AboutUsScreen extends StatelessWidget {
                       flex: 1,
                       child: IconButton(
                         onPressed: () {
-                          /// logEvent("TAP");
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => AlertDialog(
+                              content: Column(
+                                children: [
+                                  SvgPicture.asset("assets/two-kids.svg"),
+                                  Text("هل أنت متأكد من حذف الحساب؟")
+                                ],
+                              ),
+                            ),
+                          );
                         },
                         icon: const Icon(Icons.more_vert_outlined),
                         color: Colors.orange,
