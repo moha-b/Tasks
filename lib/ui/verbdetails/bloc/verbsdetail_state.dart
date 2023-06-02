@@ -10,9 +10,9 @@ class VerbStateLoading extends VerbDetailState {
 }
 
 class VerbStateLoaded extends VerbDetailState {
-  final Verb result;
+  final ApiResponse verb;
 
   VerbStateLoaded({
-    required this.result,
+    required this.verb,
   });
 }

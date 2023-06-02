@@ -1,9 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tasks/ui/verbdetails/widgets/avatar_row.dart';
 import 'package:tasks/ui/verbdetails/widgets/horizontal_list.dart';
+import 'package:tasks/ui/verbdetails/widgets/video_widgets.dart';
 import 'package:tasks/ui/verbs/bloc/verb_bloc.dart';
 
 import 'bloc/verbsdetail_bloc.dart';
@@ -30,7 +32,7 @@ class VerbsDetailScreen extends StatelessWidget {
                     children: [
                       Container(
                         color: const Color(0xffEDF4F8),
-                        height: 100,
+                        height: 90,
                         width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
@@ -47,7 +49,7 @@ class VerbsDetailScreen extends StatelessWidget {
                                 builder: (context, state) {
                                   if (state is VerbStateLoaded) {
                                     return Text(
-                                      state.result.name,
+                                      state.verb.name,
                                       textDirection: TextDirection.rtl,
                                       style: const TextStyle(
                                         color: Colors.black,
@@ -75,7 +77,7 @@ class VerbsDetailScreen extends StatelessWidget {
                       ),
                       Positioned(
                         left: 25,
-                        top: 70,
+                        top: 60,
                         child: Container(
                           width: 150,
                           height: 60,
@@ -107,22 +109,30 @@ class VerbsDetailScreen extends StatelessWidget {
                   builder: (context, state) {
                     if (state is VerbStateLoaded) {
                       return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                              margin: EdgeInsets.only(bottom: 16),
-                              child: Text(state.result.name)),
-                          const SizedBox(
-                            height: 200,
-                            width: double.infinity,
-                            // child: VideoWidget(
-                            //   id: state.result.videos['video2']!,
-                            // ),
+                              margin: const EdgeInsets.only(bottom: 16),
+                              child: Text(
+                                state.verb.name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              )),
+                          CarouselSlider(
+                            options: CarouselOptions(
+                                height: 300,
+                                enlargeCenterPage: true,
+                                viewportFraction: 0.74),
+                            items: state.verb.program.videoUrls.map((videoUrl) {
+                              return VideoWidget(id: videoUrl);
+                            }).toList(),
                           ),
                         ],
                       );
                     } else {
                       return Center(
-                        child: Text("Api Error"),
+                        child: CircularProgressIndicator(),
                       );
                     }
                   },
@@ -157,7 +167,7 @@ class VerbsDetailScreen extends StatelessWidget {
                                 );
                               } else {
                                 return Center(
-                                  child: Text("Api Error"),
+                                  child: CircularProgressIndicator(),
                                 );
                               }
                             },

@@ -37,3 +37,54 @@ class Verb extends Equatable {
   List<Object?> get props =>
       [verbId, avatar, name, enabled, listDisabled, videos];
 }
+
+class ApiResponse extends Equatable {
+  final int verbId;
+  final String name;
+  final bool enabled;
+  final bool listDisabled;
+  final Program program;
+
+  const ApiResponse({
+    required this.verbId,
+    required this.name,
+    required this.enabled,
+    required this.listDisabled,
+    required this.program,
+  });
+
+  factory ApiResponse.fromJson(Map<String, dynamic> json) {
+    return ApiResponse(
+      verbId: json['verbId'],
+      name: json['name'],
+      enabled: json['enabled'],
+      listDisabled: json['listDisabled'],
+      program: Program.fromJson(json['program']),
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        verbId,
+        name,
+        enabled,
+        listDisabled,
+        program,
+      ];
+}
+
+class Program extends Equatable {
+  final List<String> videoUrls;
+
+  const Program({required this.videoUrls});
+
+  factory Program.fromJson(Map<String, dynamic> json) {
+    List<String> videoUrls = [];
+    json['videos'].forEach((key, value) {
+      videoUrls.add(value);
+    });
+    return Program(videoUrls: videoUrls);
+  }
+  @override
+  List<Object> get props => [videoUrls];
+}

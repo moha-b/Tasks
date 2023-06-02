@@ -41,15 +41,14 @@ Future<Either<String, List<VerbsList>>> fetchVerbs() async {
   }
 }
 
-Future<Either<String, Verb>> getVerb({required int id}) async {
+Future<Either<String, ApiResponse>> getVerb({required int id}) async {
   try {
     Response response = await Dio()
         .get("https://backend.maharttafl.net/api/v2/programs/verbs/define/$id");
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> jsonMap = response.data;
-      Verb verb = Verb.fromJson(jsonMap);
-      return Right(verb);
+      ApiResponse apiResponse = ApiResponse.fromJson(response.data);
+      return Right(apiResponse);
     } else {
       return Left('Status Error: ${response.statusCode}');
     }

@@ -11,7 +11,7 @@ class VerbsDetailBloc extends Bloc<VerbDetailEvent, VerbDetailState> {
     on<VerbDetailEvent>((event, emit) async {
       final result = await getVerb(id: event.verbId);
       result.fold((l) => emit(VerbStateLoading()),
-          (result) => emit(VerbStateLoaded(result: result)));
+          (result) => emit(VerbStateLoaded(verb: result)));
     });
   }
 }
