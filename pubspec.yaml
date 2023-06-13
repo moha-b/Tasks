@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^2.0.5
   video_player: ^2.6.1
   carousel_slider:
+  stacked: ^3.4.0
 
 dev_dependencies:
   flutter_test:
